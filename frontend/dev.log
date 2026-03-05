@@ -1,0 +1,411 @@
+
+> frontend@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 2.4s
+ ○ Compiling / ...
+ ✓ Compiled / in 7.5s (2237 modules)
+ GET / 200 in 7729ms
+ GET / 200 in 47ms
+ GET / 200 in 297ms
+ GET / 200 in 62ms
+ ✓ Compiled in 481ms (2420 modules)
+ GET / 200 in 210ms
+ ✓ Compiled in 331ms (470 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 69ms
+ GET / 200 in 29ms
+ GET / 200 in 78ms
+ GET / 200 in 61ms
+ GET / 200 in 72ms
+ GET / 200 in 51ms
+ GET / 200 in 50ms
+ GET / 200 in 58ms
+ GET / 200 in 70ms
+ GET / 200 in 31ms
+ GET / 200 in 75ms
+ GET / 200 in 76ms
+ ✓ Compiled in 477ms (2418 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 180ms
+ GET / 200 in 82ms
+ GET / 200 in 53ms
+ GET / 200 in 68ms
+ GET / 200 in 54ms
+ GET / 200 in 56ms
+ GET / 200 in 67ms
+ ✓ Compiled in 1099ms (2426 modules)
+ GET / 200 in 387ms
+ GET / 200 in 52ms
+ GET / 200 in 38ms
+ GET / 200 in 63ms
+ GET / 200 in 49ms
+ GET / 200 in 47ms
+ GET / 200 in 39ms
+ ✓ Compiled in 521ms (2426 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 225ms
+ GET / 200 in 71ms
+ GET / 200 in 60ms
+ GET / 200 in 61ms
+ GET / 200 in 49ms
+ GET / 200 in 60ms
+ GET / 200 in 89ms
+ GET / 200 in 89ms
+ GET / 200 in 70ms
+ GET / 200 in 38ms
+ GET / 200 in 45ms
+ GET / 200 in 58ms
+ GET / 200 in 57ms
+ GET / 200 in 88ms
+ GET / 200 in 46ms
+ GET / 200 in 46ms
+ GET / 200 in 62ms
+ GET / 200 in 40ms
+ GET / 200 in 42ms
+ GET / 200 in 40ms
+ GET / 200 in 57ms
+ GET / 200 in 49ms
+ GET / 200 in 74ms
+ GET / 200 in 52ms
+ GET / 200 in 53ms
+ GET / 200 in 59ms
+ GET / 200 in 68ms
+ GET / 200 in 62ms
+ GET / 200 in 66ms
+ GET / 200 in 57ms
+ GET / 200 in 68ms
+ GET / 200 in 45ms
+ GET / 200 in 65ms
+ GET / 200 in 47ms
+ GET / 200 in 46ms
+ GET / 200 in 53ms
+ GET / 200 in 61ms
+ GET / 200 in 51ms
+ GET / 200 in 68ms
+ ✓ Compiled in 652ms (2426 modules)
+ ✓ Compiled in 346ms (2426 modules)
+ ✓ Compiled in 306ms (2426 modules)
+ GET / 200 in 376ms
+ GET / 200 in 40ms
+ GET / 200 in 91ms
+ GET / 200 in 76ms
+ ✓ Compiled in 579ms (2426 modules)
+ ✓ Compiled in 301ms (2426 modules)
+ GET / 200 in 379ms
+ GET / 200 in 59ms
+ GET / 200 in 44ms
+ GET / 200 in 43ms
+ GET / 200 in 73ms
+ GET / 200 in 75ms
+ GET / 200 in 57ms
+ GET / 200 in 63ms
+ GET / 200 in 47ms
+ GET / 200 in 63ms
+ ✓ Compiled in 492ms (2426 modules)
+ GET / 200 in 98ms
+ GET / 200 in 52ms
+ GET / 200 in 89ms
+ ✓ Compiled in 1356ms (2424 modules)
+ ✓ Compiled in 293ms (2424 modules)
+ GET / 200 in 348ms
+ GET / 200 in 44ms
+ ✓ Compiled in 571ms (2426 modules)
+ GET / 200 in 379ms
+ GET / 200 in 61ms
+ GET / 200 in 53ms
+ GET / 200 in 69ms
+ ✓ Compiled in 424ms (2426 modules)
+ GET / 200 in 115ms
+ GET / 200 in 50ms
+ ✓ Compiled in 353ms (2426 modules)
+ GET / 200 in 361ms
+ GET / 200 in 79ms
+ GET / 200 in 66ms
+ GET / 200 in 54ms
+ GET / 200 in 50ms
+ GET / 200 in 56ms
+ GET / 200 in 55ms
+ GET / 200 in 72ms
+ GET / 200 in 66ms
+ ✓ Compiled in 595ms (2418 modules)
+ GET / 200 in 120ms
+ GET / 200 in 68ms
+ GET / 200 in 47ms
+ GET / 200 in 44ms
+ GET / 200 in 73ms
+ GET / 200 in 69ms
+ GET / 200 in 73ms
+ GET / 200 in 73ms
+ GET / 200 in 56ms
+ ✓ Compiled in 602ms (2422 modules)
+ GET / 200 in 399ms
+ GET / 200 in 45ms
+ GET / 200 in 69ms
+ GET / 200 in 57ms
+ GET / 200 in 57ms
+ GET / 200 in 52ms
+ GET / 200 in 38ms
+ GET / 200 in 69ms
+ GET / 200 in 48ms
+ GET / 200 in 54ms
+ GET / 200 in 48ms
+ ✓ Compiled in 457ms (2422 modules)
+ ✓ Compiled in 364ms (2422 modules)
+ ✓ Compiled in 321ms (2422 modules)
+ GET / 200 in 407ms
+ ✓ Compiled in 378ms (2422 modules)
+ ✓ Compiled in 286ms (2422 modules)
+ GET / 200 in 410ms
+ GET / 200 in 64ms
+ ✓ Compiled in 359ms (2422 modules)
+ ✓ Compiled in 455ms (2422 modules)
+ GET / 200 in 334ms
+ GET / 200 in 55ms
+ GET / 200 in 68ms
+ GET / 200 in 60ms
+ GET / 200 in 66ms
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m the name `hiddenNews` is defined multiple times
+    ,-[[36;1;4mC:\Users\bjeev\gold_silver_system\frontend\app\page.tsx[0m:58:1]
+ [2m58[0m |   const [predictions, setPredictions] = useState<any>(null);
+ [2m59[0m |   const [cityPrices, setCityPrices] = useState<any[]>([]);
+ [2m60[0m |   const [news, setNews] = useState<any[]>([]);
+ [2m61[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [31;1m         ^^^^^|^^^^[0m
+    :               [31;1m`-- [31;1mprevious definition of `hiddenNews` here[0m[0m
+ [2m62[0m |   
+ [2m63[0m |   const [goldHistory, setGoldHistory] = useState<any[]>([]);
+ [2m64[0m |   const [silverHistory, setSilverHistory] = useState<any[]>([]);
+ [2m65[0m |   const [loadingHistory, setLoadingHistory] = useState(true);
+ [2m66[0m |   
+ [2m67[0m |   const [timeRange, setTimeRange] = useState("1y");
+ [2m68[0m |   const [notifications, setNotifications] = useState<string[]>([]);
+ [2m69[0m |   const [activeTab, setActiveTab] = useState("dashboard");
+ [2m70[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [33;1m         ^^^^^|^^^^[0m
+    :               [33;1m`-- [33;1m`hiddenNews` redefined here[0m[0m
+ [2m71[0m |   const [showSMA, setShowSMA] = useState(false);
+ [2m72[0m |   const [showRSI, setShowRSI] = useState(false);
+    `----
+
+  [31mx[0m the name `setHiddenNews` is defined multiple times
+    ,-[[36;1;4mC:\Users\bjeev\gold_silver_system\frontend\app\page.tsx[0m:58:1]
+ [2m58[0m |   const [predictions, setPredictions] = useState<any>(null);
+ [2m59[0m |   const [cityPrices, setCityPrices] = useState<any[]>([]);
+ [2m60[0m |   const [news, setNews] = useState<any[]>([]);
+ [2m61[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [31;1m                     ^^^^^^|^^^^^^[0m
+    :                            [31;1m`-- [31;1mprevious definition of `setHiddenNews` here[0m[0m
+ [2m62[0m |   
+ [2m63[0m |   const [goldHistory, setGoldHistory] = useState<any[]>([]);
+ [2m64[0m |   const [silverHistory, setSilverHistory] = useState<any[]>([]);
+ [2m65[0m |   const [loadingHistory, setLoadingHistory] = useState(true);
+ [2m66[0m |   
+ [2m67[0m |   const [timeRange, setTimeRange] = useState("1y");
+ [2m68[0m |   const [notifications, setNotifications] = useState<string[]>([]);
+ [2m69[0m |   const [activeTab, setActiveTab] = useState("dashboard");
+ [2m70[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [33;1m                     ^^^^^^|^^^^^^[0m
+    :                            [33;1m`-- [33;1m`setHiddenNews` redefined here[0m[0m
+ [2m71[0m |   const [showSMA, setShowSMA] = useState(false);
+ [2m72[0m |   const [showRSI, setShowRSI] = useState(false);
+    `----
+
+Import trace for requested module:
+./app/page.tsx
+ ○ Compiling /_error ...
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m the name `hiddenNews` is defined multiple times
+    ,-[[36;1;4mC:\Users\bjeev\gold_silver_system\frontend\app\page.tsx[0m:58:1]
+ [2m58[0m |   const [predictions, setPredictions] = useState<any>(null);
+ [2m59[0m |   const [cityPrices, setCityPrices] = useState<any[]>([]);
+ [2m60[0m |   const [news, setNews] = useState<any[]>([]);
+ [2m61[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [31;1m         ^^^^^|^^^^[0m
+    :               [31;1m`-- [31;1mprevious definition of `hiddenNews` here[0m[0m
+ [2m62[0m |   
+ [2m63[0m |   const [goldHistory, setGoldHistory] = useState<any[]>([]);
+ [2m64[0m |   const [silverHistory, setSilverHistory] = useState<any[]>([]);
+ [2m65[0m |   const [loadingHistory, setLoadingHistory] = useState(true);
+ [2m66[0m |   
+ [2m67[0m |   const [timeRange, setTimeRange] = useState("1y");
+ [2m68[0m |   const [notifications, setNotifications] = useState<string[]>([]);
+ [2m69[0m |   const [activeTab, setActiveTab] = useState("dashboard");
+ [2m70[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [33;1m         ^^^^^|^^^^[0m
+    :               [33;1m`-- [33;1m`hiddenNews` redefined here[0m[0m
+ [2m71[0m |   const [showSMA, setShowSMA] = useState(false);
+ [2m72[0m |   const [showRSI, setShowRSI] = useState(false);
+    `----
+
+  [31mx[0m the name `setHiddenNews` is defined multiple times
+    ,-[[36;1;4mC:\Users\bjeev\gold_silver_system\frontend\app\page.tsx[0m:58:1]
+ [2m58[0m |   const [predictions, setPredictions] = useState<any>(null);
+ [2m59[0m |   const [cityPrices, setCityPrices] = useState<any[]>([]);
+ [2m60[0m |   const [news, setNews] = useState<any[]>([]);
+ [2m61[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [31;1m                     ^^^^^^|^^^^^^[0m
+    :                            [31;1m`-- [31;1mprevious definition of `setHiddenNews` here[0m[0m
+ [2m62[0m |   
+ [2m63[0m |   const [goldHistory, setGoldHistory] = useState<any[]>([]);
+ [2m64[0m |   const [silverHistory, setSilverHistory] = useState<any[]>([]);
+ [2m65[0m |   const [loadingHistory, setLoadingHistory] = useState(true);
+ [2m66[0m |   
+ [2m67[0m |   const [timeRange, setTimeRange] = useState("1y");
+ [2m68[0m |   const [notifications, setNotifications] = useState<string[]>([]);
+ [2m69[0m |   const [activeTab, setActiveTab] = useState("dashboard");
+ [2m70[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [33;1m                     ^^^^^^|^^^^^^[0m
+    :                            [33;1m`-- [33;1m`setHiddenNews` redefined here[0m[0m
+ [2m71[0m |   const [showSMA, setShowSMA] = useState(false);
+ [2m72[0m |   const [showRSI, setShowRSI] = useState(false);
+    `----
+
+Import trace for requested module:
+./app/page.tsx
+ GET / 500 in 13ms
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m the name `hiddenNews` is defined multiple times
+    ,-[[36;1;4mC:\Users\bjeev\gold_silver_system\frontend\app\page.tsx[0m:58:1]
+ [2m58[0m |   const [predictions, setPredictions] = useState<any>(null);
+ [2m59[0m |   const [cityPrices, setCityPrices] = useState<any[]>([]);
+ [2m60[0m |   const [news, setNews] = useState<any[]>([]);
+ [2m61[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [31;1m         ^^^^^|^^^^[0m
+    :               [31;1m`-- [31;1mprevious definition of `hiddenNews` here[0m[0m
+ [2m62[0m |   
+ [2m63[0m |   const [goldHistory, setGoldHistory] = useState<any[]>([]);
+ [2m64[0m |   const [silverHistory, setSilverHistory] = useState<any[]>([]);
+ [2m65[0m |   const [loadingHistory, setLoadingHistory] = useState(true);
+ [2m66[0m |   
+ [2m67[0m |   const [timeRange, setTimeRange] = useState("1y");
+ [2m68[0m |   const [notifications, setNotifications] = useState<string[]>([]);
+ [2m69[0m |   const [activeTab, setActiveTab] = useState("dashboard");
+ [2m70[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [33;1m         ^^^^^|^^^^[0m
+    :               [33;1m`-- [33;1m`hiddenNews` redefined here[0m[0m
+ [2m71[0m |   const [showSMA, setShowSMA] = useState(false);
+ [2m72[0m |   const [showRSI, setShowRSI] = useState(false);
+    `----
+
+  [31mx[0m the name `setHiddenNews` is defined multiple times
+    ,-[[36;1;4mC:\Users\bjeev\gold_silver_system\frontend\app\page.tsx[0m:58:1]
+ [2m58[0m |   const [predictions, setPredictions] = useState<any>(null);
+ [2m59[0m |   const [cityPrices, setCityPrices] = useState<any[]>([]);
+ [2m60[0m |   const [news, setNews] = useState<any[]>([]);
+ [2m61[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [31;1m                     ^^^^^^|^^^^^^[0m
+    :                            [31;1m`-- [31;1mprevious definition of `setHiddenNews` here[0m[0m
+ [2m62[0m |   
+ [2m63[0m |   const [goldHistory, setGoldHistory] = useState<any[]>([]);
+ [2m64[0m |   const [silverHistory, setSilverHistory] = useState<any[]>([]);
+ [2m65[0m |   const [loadingHistory, setLoadingHistory] = useState(true);
+ [2m66[0m |   
+ [2m67[0m |   const [timeRange, setTimeRange] = useState("1y");
+ [2m68[0m |   const [notifications, setNotifications] = useState<string[]>([]);
+ [2m69[0m |   const [activeTab, setActiveTab] = useState("dashboard");
+ [2m70[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [33;1m                     ^^^^^^|^^^^^^[0m
+    :                            [33;1m`-- [33;1m`setHiddenNews` redefined here[0m[0m
+ [2m71[0m |   const [showSMA, setShowSMA] = useState(false);
+ [2m72[0m |   const [showRSI, setShowRSI] = useState(false);
+    `----
+
+Import trace for requested module:
+./app/page.tsx
+ GET /_next/static/webpack/6eef24a95d9ec820.webpack.hot-update.json 500 in 877ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 500 in 10ms
+ GET / 500 in 9ms
+ GET / 500 in 19ms
+ GET / 500 in 22ms
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m the name `hiddenNews` is defined multiple times
+    ,-[[36;1;4mC:\Users\bjeev\gold_silver_system\frontend\app\page.tsx[0m:58:1]
+ [2m58[0m |   const [predictions, setPredictions] = useState<any>(null);
+ [2m59[0m |   const [cityPrices, setCityPrices] = useState<any[]>([]);
+ [2m60[0m |   const [news, setNews] = useState<any[]>([]);
+ [2m61[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [31;1m         ^^^^^|^^^^[0m
+    :               [31;1m`-- [31;1mprevious definition of `hiddenNews` here[0m[0m
+ [2m62[0m |   
+ [2m63[0m |   const [goldHistory, setGoldHistory] = useState<any[]>([]);
+ [2m64[0m |   const [silverHistory, setSilverHistory] = useState<any[]>([]);
+ [2m65[0m |   const [loadingHistory, setLoadingHistory] = useState(true);
+ [2m66[0m |   
+ [2m67[0m |   const [timeRange, setTimeRange] = useState("1y");
+ [2m68[0m |   const [notifications, setNotifications] = useState<string[]>([]);
+ [2m69[0m |   const [activeTab, setActiveTab] = useState("dashboard");
+ [2m70[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [33;1m         ^^^^^|^^^^[0m
+    :               [33;1m`-- [33;1m`hiddenNews` redefined here[0m[0m
+ [2m71[0m |   const [showSMA, setShowSMA] = useState(false);
+ [2m72[0m |   const [showRSI, setShowRSI] = useState(false);
+    `----
+
+  [31mx[0m the name `setHiddenNews` is defined multiple times
+    ,-[[36;1;4mC:\Users\bjeev\gold_silver_system\frontend\app\page.tsx[0m:58:1]
+ [2m58[0m |   const [predictions, setPredictions] = useState<any>(null);
+ [2m59[0m |   const [cityPrices, setCityPrices] = useState<any[]>([]);
+ [2m60[0m |   const [news, setNews] = useState<any[]>([]);
+ [2m61[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [31;1m                     ^^^^^^|^^^^^^[0m
+    :                            [31;1m`-- [31;1mprevious definition of `setHiddenNews` here[0m[0m
+ [2m62[0m |   
+ [2m63[0m |   const [goldHistory, setGoldHistory] = useState<any[]>([]);
+ [2m64[0m |   const [silverHistory, setSilverHistory] = useState<any[]>([]);
+ [2m65[0m |   const [loadingHistory, setLoadingHistory] = useState(true);
+ [2m66[0m |   
+ [2m67[0m |   const [timeRange, setTimeRange] = useState("1y");
+ [2m68[0m |   const [notifications, setNotifications] = useState<string[]>([]);
+ [2m69[0m |   const [activeTab, setActiveTab] = useState("dashboard");
+ [2m70[0m |   const [hiddenNews, setHiddenNews] = useState<Set<string>>(new Set());
+    : [33;1m                     ^^^^^^|^^^^^^[0m
+    :                            [33;1m`-- [33;1m`setHiddenNews` redefined here[0m[0m
+ [2m71[0m |   const [showSMA, setShowSMA] = useState(false);
+ [2m72[0m |   const [showRSI, setShowRSI] = useState(false);
+    `----
+
+Import trace for requested module:
+./app/page.tsx
+ GET /_next/static/webpack/6eef24a95d9ec820.webpack.hot-update.json 500 in 258ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 500 in 10ms
+ GET / 500 in 9ms
+ GET / 500 in 16ms
+ GET / 500 in 22ms
+ GET / 500 in 11ms
+ GET / 500 in 16ms
+ GET / 500 in 20ms
+ GET / 500 in 15ms
+ ✓ Compiled /_not-found in 3.2s (2637 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /_next/static/webpack/6eef24a95d9ec820.webpack.hot-update.json 404 in 4060ms
+ GET / 200 in 1423ms
+ GET / 200 in 86ms
+ GET / 200 in 61ms
+ GET / 200 in 65ms
+ GET / 200 in 66ms
+ GET / 200 in 83ms
+ GET / 200 in 66ms
+ GET / 200 in 66ms
+ ✓ Compiled in 558ms (2648 modules)
+ GET / 200 in 414ms
+ GET / 200 in 76ms
+ ✓ Compiled in 510ms (2648 modules)
+ GET / 200 in 110ms
+ GET / 200 in 52ms
+ GET / 200 in 50ms
+ GET / 200 in 36ms
+ GET / 200 in 95ms
+ GET / 200 in 33ms
+ GET / 200 in 65ms
