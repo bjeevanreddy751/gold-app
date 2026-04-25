@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { TrendingUp, TrendingDown, Activity, BellRing, Moon, Sun, Download, MapPin, ExternalLink, Newspaper, ShoppingCart, Calculator, Briefcase, Lock, LogOut, MessageCircle, X, Send } from "lucide-react";
+import { TrendingUp, TrendingDown, Activity, BellRing, Moon, Sun, Download, MapPin, ExternalLink, Newspaper, ShoppingCart, Calculator, Briefcase, Lock, LogOut, MessageCircle, X, Send, Globe } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-const API_BASE_URL = "http://127.0.0.1:8001/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-48">
@@ -30,23 +30,20 @@ const RupeeIcon = ({ className }: { className?: string }) => (
 
 const GoldLogo = ({ className }: { className?: string }) => (
   <div className={cn("flex items-center justify-center rounded-xl shadow-md bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700 p-2 border border-yellow-200/50", className)}>
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-yellow-950">
-      <circle cx="12" cy="12" r="8" fill="#FDE047" stroke="none" />
-      <circle cx="12" cy="12" r="8" />
-      <path d="M12 8v8" />
-      <path d="M8.5 10.5a3.5 3.5 0 0 1 7 0" />
-      <path d="M8.5 13.5a3.5 3.5 0 0 0 7 0" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 17L5 7H19L22 17H2Z" fill="#FDE047" stroke="#854D0E" strokeWidth="1.5"/>
+      <path d="M5 12L7 8H17L19 12" stroke="#854D0E" strokeWidth="1" strokeOpacity="0.5"/>
+      <path d="M4 14H20" stroke="#854D0E" strokeWidth="1" strokeOpacity="0.3"/>
     </svg>
   </div>
 );
 
 const SilverLogo = ({ className }: { className?: string }) => (
   <div className={cn("flex items-center justify-center rounded-xl shadow-md bg-gradient-to-br from-gray-200 via-gray-400 to-gray-600 p-2 border border-gray-100/50", className)}>
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900">
-      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" fill="#E5E7EB" stroke="none" />
-      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-      <line x1="12" y1="22.08" x2="12" y2="12" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 17L5 7H19L22 17H2Z" fill="#E5E7EB" stroke="#374151" strokeWidth="1.5"/>
+      <path d="M5 12L7 8H17L19 12" stroke="#374151" strokeWidth="1" strokeOpacity="0.5"/>
+      <path d="M4 14H20" stroke="#374151" strokeWidth="1" strokeOpacity="0.3"/>
     </svg>
   </div>
 );
@@ -85,7 +82,7 @@ export default function Dashboard() {
   const [crisisData, setCrisisData] = useState<any[]>([]);
   const [comparisonData, setComparisonData] = useState<any>(null);
   const [marketCountdown, setMarketCountdown] = useState<any[]>([]);
-  const [leaderboard, setLeaderboard] = useState<any[]>([]);
+  const [actualVsPredict, setActualVsPredict] = useState<any[]>([]);
   const [historicalEvents, setHistoricalEvents] = useState<any[]>([]);
   const [shockAlert, setShockAlert] = useState<any>(null);
 
@@ -103,9 +100,11 @@ export default function Dashboard() {
   const [quizScore, setQuizScore] = useState(0);
 
   const [timeRange, setTimeRange] = useState("live");
+  const [auditAsset, setAuditAsset] = useState("gold");
   const [notifications, setNotifications] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [levelAsset, setLevelAsset] = useState("gold");
+  const [longTermAsset, setLongTermAsset] = useState("gold");
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
 
   // Chatbot State
@@ -175,12 +174,8 @@ export default function Dashboard() {
     const staticInterval = setInterval(fetchStaticData, 60 * 1000); // 60 seconds
     const analyticsInterval = setInterval(async () => {
       try {
-        const [analyticsRes, predRes] = await Promise.all([
-          axios.get(`${API_BASE_URL}/market-analytics`),
-          axios.get(`${API_BASE_URL}/predict`)
-        ]);
+        const analyticsRes = await axios.get(`${API_BASE_URL}/market-analytics`);
         setAnalytics(analyticsRes.data);
-        setPredictions(predRes.data);
       } catch (e) { console.error(e) }
     }, 120 * 1000); // 2 minutes for heavy analytics
     
@@ -203,34 +198,36 @@ export default function Dashboard() {
 
   const fetchAdvancedData = async () => {
     try {
-      const [mood, crisis, comp, events, count, leader] = await Promise.all([
+      const [mood, crisis, comp, events, count, avp] = await Promise.all([
         axios.get(`${API_BASE_URL}/market-mood`),
         axios.get(`${API_BASE_URL}/crisis-tracker`),
         axios.get(`${API_BASE_URL}/comparison-assets`),
         axios.get(`${API_BASE_URL}/historical-events`),
         axios.get(`${API_BASE_URL}/market-countdown`),
-        axios.get(`${API_BASE_URL}/leaderboard`)
+        axios.get(`${API_BASE_URL}/actual-vs-predict`)
       ]);
       setMarketMood(mood.data);
       setCrisisData(crisis.data);
       setComparisonData(comp.data);
       setHistoricalEvents(events.data);
       setMarketCountdown(count.data);
-      setLeaderboard(leader.data);
+      setActualVsPredict(avp.data);
     } catch (e) { console.error(e); }
   };
 
   const fetchDynamicData = async () => {
     try {
-      const [priceRes, cityRes] = await Promise.all([
+      const [priceRes, cityRes, predRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/current-prices`),
-        axios.get(`${API_BASE_URL}/city-prices`)
+        axios.get(`${API_BASE_URL}/city-prices`),
+        axios.get(`${API_BASE_URL}/predict`)
       ]);
       
       const priceData = priceRes.data;
       setCurrentPrices(priceData);
       setShockAlert(priceData.shock_alert);
       setCityPrices(cityRes.data);
+      setPredictions(predRes.data);
       
       // Update Live Graph Data
       const now = new Date().toLocaleTimeString('en-US', { hour12: false });
@@ -259,8 +256,8 @@ export default function Dashboard() {
   const fetchInitialData = async () => {
     try {
       const [histGold, histSilver, analyticsRes, predRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/historical-data/gold`),
-        axios.get(`${API_BASE_URL}/historical-data/silver`),
+        axios.get(`${API_BASE_URL}/historical-data/gold`, { params: { range: timeRange } }),
+        axios.get(`${API_BASE_URL}/historical-data/silver`, { params: { range: timeRange } }),
         axios.get(`${API_BASE_URL}/market-analytics`),
         axios.get(`${API_BASE_URL}/predict`)
       ]);
@@ -276,6 +273,23 @@ export default function Dashboard() {
       fetchInitialData();
     }
   }, [mounted]);
+
+  useEffect(() => {
+    if (!mounted || timeRange === 'live') return;
+    const fetchRangeData = async () => {
+      setLoadingHistory(true);
+      try {
+        const [histGold, histSilver] = await Promise.all([
+          axios.get(`${API_BASE_URL}/historical-data/gold`, { params: { range: timeRange } }),
+          axios.get(`${API_BASE_URL}/historical-data/silver`, { params: { range: timeRange } })
+        ]);
+        setGoldHistory(histGold.data);
+        setSilverHistory(histSilver.data);
+      } catch (e) { console.error(e); }
+      setLoadingHistory(false);
+    };
+    fetchRangeData();
+  }, [timeRange, mounted]);
 
   const fetchStaticData = async () => {
     try {
@@ -330,7 +344,10 @@ export default function Dashboard() {
       <header className="flex justify-between items-center mb-8 border-b pb-4">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-gradient-to-br from-yellow-400 via-yellow-600 to-gray-400 text-white rounded-xl shadow-inner">
-            <Activity className="w-6 h-6 animate-pulse" />
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-sm">
+              <path d="M2 17L5 7H19L22 17H2Z" fill="#FDE047" stroke="#854D0E" strokeWidth="1.5"/>
+              <path d="M5 12L7 8H17L19 12" stroke="#854D0E" strokeWidth="1" strokeOpacity="0.5"/>
+            </svg>
           </div>
           <div>
             <div className="flex items-center gap-2">
@@ -402,7 +419,7 @@ export default function Dashboard() {
           { id: 'cities', label: 'City Prices', icon: <MapPin className="w-4 h-4" /> },
           { id: 'calculator', label: 'Jewellery Tools', icon: <ShoppingCart className="w-4 h-4" /> },
           { id: 'portfolio', label: 'My Wealth', icon: <Briefcase className="w-4 h-4" /> },
-          { id: 'community', label: 'Leaderboard', icon: <TrendingUp className="w-4 h-4" /> },
+          { id: 'etf', label: 'ETF Investing', icon: <TrendingUp className="w-4 h-4" /> },
         ].map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={cn("flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full transition-all whitespace-nowrap", activeTab === tab.id ? "bg-primary text-primary-foreground" : "hover:bg-secondary text-muted-foreground")}>
             {tab.icon} {tab.label}
@@ -446,10 +463,188 @@ export default function Dashboard() {
             <PriceCard title="Silver (per 10g)" price={currentPrices?.silver?.price_1kg ? currentPrices.silver.price_1kg / 100 : null} logo={<SilverLogo className="opacity-80" />} />
           </div>
 
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><TrendingUp className="w-5 h-5 text-primary" /> AI Forecast (Tomorrow)</h2>
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><TrendingUp className="w-5 h-5 text-primary" /> Tomorrow's Bullion Outlook</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <PredictionCard title="Gold Forecast (24K per 10g)" data={predictions?.gold} isGold={true} /> 
-            <PredictionCard title="Silver Forecast (per 1kg)" data={predictions?.silver} isGold={false} />
+            <PredictionCard title="Gold Forecast (24K per 10g)" data={predictions?.gold} isGold={true} currentPrice={currentPrices?.gold?.price_10g_24k} /> 
+            <PredictionCard title="Silver Forecast (per 1kg)" data={predictions?.silver} isGold={false} currentPrice={currentPrices?.silver?.price_1kg} />
+          </div>
+
+          {/* Daily Pick Banner */}
+          {(predictions?.gold || predictions?.silver) && (
+            <div className="bg-gradient-to-br from-primary/20 via-primary/5 to-card border-2 border-primary/20 rounded-[3rem] p-10 mb-12 relative overflow-hidden group shadow-2xl">
+               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full -mr-64 -mt-64 blur-[100px] group-hover:bg-primary/10 transition-all duration-1000"></div>
+               
+               <div className="relative z-10 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-12">
+                  <div className="max-w-xl">
+                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-[0.2em] mb-6 shadow-xl shadow-primary/20">
+                        <Lock size={12} fill="currentColor" /> Secure Daily Signal
+                     </div>
+                     <h3 className="text-4xl font-black mb-4 uppercase italic tracking-tighter leading-none">Investor Buy Guide</h3>
+                     <p className="text-sm font-medium text-muted-foreground leading-relaxed opacity-80">
+                        Strategic entry/exit points calculated every 3 hours. Buy at the <span className="text-foreground font-bold underline decoration-primary underline-offset-4">Fixed Entry</span> and secure profits at the <span className="text-foreground font-bold underline decoration-green-500 underline-offset-4">Target Price</span>.
+                     </p>
+                  </div>
+
+                  <div className="flex flex-col md:flex-row gap-6 w-full xl:w-auto">
+                     {/* Gold Signal Section */}
+                     <div className="flex-1 bg-background/40 backdrop-blur-xl border border-primary/20 rounded-[2rem] p-6 relative group/gold hover:border-primary/50 transition-all">
+                        <div className="flex justify-between items-center mb-6">
+                           <div className="flex items-center gap-2">
+                              <div className="p-2 bg-primary/10 rounded-lg text-primary"><GoldLogo className="w-4 h-4" /></div>
+                              <span className="text-xs font-black uppercase tracking-widest">Gold 24K</span>
+                           </div>
+                           <span className={cn("px-3 py-1 rounded-full text-[10px] font-black border", 
+                              predictions.gold.recommendation.includes("BUY") ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-red-500/10 text-red-500 border-red-500/20")}>
+                              {predictions.gold.recommendation}
+                           </span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 mb-4">
+                           <div>
+                              <p className="text-[10px] font-bold text-muted-foreground uppercase mb-1">Buy Price</p>
+                              <p className="text-xl font-black tabular-nums">₹{predictions.gold.daily_buy_at.toLocaleString()}</p>
+                           </div>
+                           <div className="text-right">
+                              <p className="text-[10px] font-bold text-green-500 uppercase mb-1">Target</p>
+                              <p className="text-xl font-black text-green-600 tabular-nums">₹{predictions.gold.daily_target.toLocaleString()}</p>
+                           </div>
+                        </div>
+                        <div className="h-1 w-full bg-secondary rounded-full overflow-hidden">
+                           <div className="h-full bg-primary animate-pulse" style={{ width: '100%' }}></div>
+                        </div>
+                     </div>
+
+                     {/* Silver Signal Section */}
+                     <div className="flex-1 bg-background/40 backdrop-blur-xl border border-primary/10 rounded-[2rem] p-6 relative group/silver hover:border-primary/40 transition-all">
+                        <div className="flex justify-between items-center mb-6">
+                           <div className="flex items-center gap-2">
+                              <div className="p-2 bg-zinc-500/10 rounded-lg text-zinc-500"><SilverLogo className="w-4 h-4" /></div>
+                              <span className="text-xs font-black uppercase tracking-widest">Silver 1KG</span>
+                           </div>
+                           <span className={cn("px-3 py-1 rounded-full text-[10px] font-black border", 
+                              predictions.silver.recommendation.includes("BUY") ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-red-500/10 text-red-500 border-red-500/20")}>
+                              {predictions.silver.recommendation}
+                           </span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 mb-4">
+                           <div>
+                              <p className="text-[10px] font-bold text-muted-foreground uppercase mb-1">Buy Price</p>
+                              <p className="text-xl font-black tabular-nums">₹{predictions.silver.daily_buy_at.toLocaleString()}</p>
+                           </div>
+                           <div className="text-right">
+                              <p className="text-[10px] font-bold text-green-500 uppercase mb-1">Target</p>
+                              <p className="text-xl font-black text-green-600 tabular-nums">₹{predictions.silver.daily_target.toLocaleString()}</p>
+                           </div>
+                        </div>
+                        <div className="h-1 w-full bg-secondary rounded-full overflow-hidden">
+                           <div className="h-full bg-zinc-400" style={{ width: '100%' }}></div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+          )}
+
+          <div className="mb-12">
+             <div className="bg-card border rounded-3xl overflow-hidden shadow-sm">
+                <div className="p-6 border-b bg-secondary/30 flex justify-between items-center flex-wrap gap-4">
+                   <h3 className="font-bold flex items-center gap-2 italic"><Activity className="w-4 h-4 text-primary" /> AI Accuracy Audit (30-Day History)</h3>
+                   <div className="flex gap-2 items-center">
+                     <div className="flex bg-background rounded-lg p-0.5 border">
+                       <button onClick={() => setAuditAsset('gold')} className={cn("px-4 py-1.5 text-xs font-bold rounded shadow-sm", auditAsset === 'gold' ? "bg-primary text-white" : "text-muted-foreground")}>GOLD</button>
+                       <button onClick={() => setAuditAsset('silver')} className={cn("px-4 py-1.5 text-xs font-bold rounded shadow-sm", auditAsset === 'silver' ? "bg-primary text-white" : "text-muted-foreground")}>SILVER</button>
+                     </div>
+                     <span className="text-[10px] font-black bg-green-500/10 text-green-600 px-3 py-2 rounded-lg uppercase tracking-tighter">Verified Daily</span>
+                   </div>
+                </div>
+                <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead className="sticky top-0 bg-background/95 backdrop-blur z-10 shadow-sm">
+                      <tr className="border-b text-[10px] font-black uppercase text-muted-foreground">
+                        <th className="p-4">Date</th>
+                        <th className="p-4">Actual Price</th>
+                        <th className="p-4">AI Predicted</th>
+                        <th className="p-4">Error Margin</th>
+                        <th className="p-4">Confidence</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {actualVsPredict.map((row, i) => {
+                        const actual = auditAsset === 'gold' ? row.actual_gold : row.actual_silver;
+                        const predicted = auditAsset === 'gold' ? row.predicted_gold : row.predicted_silver;
+                        const error = auditAsset === 'gold' ? row.error_gold : row.error_silver;
+                        const accuracy = auditAsset === 'gold' ? row.accuracy_gold : row.accuracy_silver;
+                        return (
+                          <tr key={i} className="border-b last:border-0 hover:bg-secondary/10 transition-colors">
+                            <td className="p-4 font-bold">{row.date}</td>
+                            <td className="p-4 font-medium text-muted-foreground">₹{actual?.toLocaleString() || 0}</td>
+                            <td className="p-4 font-black">₹{predicted?.toLocaleString() || 0}</td>
+                            <td className={cn("p-4 font-bold", error < (auditAsset === 'gold' ? 300 : 800) ? "text-green-500" : "text-amber-500")}>±₹{error}</td>
+                            <td className="p-4">
+                               <div className="flex items-center gap-2">
+                                 <div className="flex-1 h-1.5 bg-secondary rounded-full overflow-hidden">
+                                    <div className="h-full bg-primary" style={{ width: `${accuracy}%` }}></div>
+                                 </div>
+                                 <span className="text-[10px] font-bold">{accuracy}%</span>
+                               </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+             </div>
+          </div>
+
+          <div className="mb-12">
+             <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
+               <h3 className="text-2xl font-black uppercase italic tracking-tighter flex items-center gap-2">
+                  <Briefcase className="text-primary" /> Long-Term Wealth Projection
+               </h3>
+               <div className="flex bg-secondary rounded-lg p-0.5 border">
+                  <button onClick={() => setLongTermAsset('gold')} className={cn("px-4 py-1.5 text-xs font-bold rounded shadow-sm", longTermAsset === 'gold' ? "bg-primary text-white" : "text-muted-foreground")}>GOLD</button>
+                  <button onClick={() => setLongTermAsset('silver')} className={cn("px-4 py-1.5 text-xs font-bold rounded shadow-sm", longTermAsset === 'silver' ? "bg-primary text-white" : "text-muted-foreground")}>SILVER</button>
+               </div>
+             </div>
+             
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {[
+                  { label: "6-Month Outlook", data: longTermAsset === 'gold' ? predictions?.gold?.long_term?.gold_6m : predictions?.gold?.long_term?.silver_6m, roi: longTermAsset === 'gold' ? '5.5%' : '7.0%' },
+                  { label: "1-Year Strategic Target", data: longTermAsset === 'gold' ? predictions?.gold?.long_term?.gold_1y : predictions?.gold?.long_term?.silver_1y, roi: longTermAsset === 'gold' ? '12.0%' : '15.0%' }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-gradient-to-br from-card to-secondary/20 border-2 border-primary/10 rounded-[2.5rem] p-8 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-all">
+                     <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>
+                     <h4 className="text-sm font-black uppercase text-primary mb-6 tracking-widest">{item.label} ({longTermAsset === 'gold' ? '24K' : '1KG'})</h4>
+                     
+                     <div className="grid grid-cols-1 gap-6">
+                        <div className="flex justify-between items-end border-b border-dashed pb-4">
+                           <div>
+                              <p className="text-[10px] font-black text-muted-foreground uppercase mb-1">Expected Target</p>
+                              <p className="text-4xl font-black tracking-tighter text-foreground">₹{item.data?.target?.toLocaleString()}</p>
+                           </div>
+                           <div className="text-right">
+                              <p className="text-[10px] font-black text-green-500 uppercase mb-1">Potential ROI</p>
+                              <p className="text-xl font-bold text-green-600">+{item.roi}*</p>
+                           </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                           <div className="bg-background/50 p-4 rounded-2xl border border-blue-500/20">
+                              <p className="text-[10px] font-black text-blue-500 uppercase mb-1 flex items-center gap-1"><ShoppingCart size={10}/> Buy Below</p>
+                              <p className="text-lg font-black text-blue-600">₹{item.data?.buy_below?.toLocaleString()}</p>
+                           </div>
+                           <div className="bg-background/50 p-4 rounded-2xl border border-red-500/20 text-right">
+                              <p className="text-[10px] font-black text-red-500 uppercase mb-1 flex items-center justify-end gap-1"><TrendingUp size={10}/> Sell Above</p>
+                              <p className="text-lg font-black text-red-600">₹{item.data?.sell_above?.toLocaleString()}</p>
+                           </div>
+                        </div>
+                     </div>
+                     <p className="text-[9px] text-muted-foreground mt-6 font-medium leading-relaxed italic">
+                        *ROI based on {longTermAsset === 'gold' ? '10-year' : 'industrial demand &'} historical CAGR. Not financial advice.
+                     </p>
+                  </div>
+                ))}
+             </div>
           </div>
 
           <div className="flex justify-between items-center mb-4 flex-wrap gap-4">
@@ -908,85 +1103,116 @@ export default function Dashboard() {
         </motion.div>
       )}
 
-      {activeTab === 'community' && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
-          {isQuizOpen ? (
-            <div className="bg-card border rounded-[3rem] p-12 text-center shadow-2xl mb-12 border-primary/20">
-              <h2 className="text-3xl font-black mb-6 uppercase tracking-tighter">Bullion Risk Personality Test</h2>
-              <div className="space-y-8 max-w-md mx-auto">
-                <p className="text-lg font-medium text-muted-foreground leading-relaxed">If gold prices drop by 10% tomorrow, what's your first reaction?</p>
-                <div className="grid gap-4">
-                  <button onClick={() => { setQuizScore(1); setIsQuizOpen(false); }} className="p-5 border rounded-2xl hover:bg-primary hover:text-white transition font-bold text-sm">Sell immediately to protect capital</button>
-                  <button onClick={() => { setQuizScore(2); setIsQuizOpen(false); }} className="p-5 border rounded-2xl hover:bg-primary hover:text-white transition font-bold text-sm">Do nothing and hold long term</button>
-                  <button onClick={() => { setQuizScore(3); setIsQuizOpen(false); }} className="p-5 border rounded-2xl hover:bg-primary hover:text-white transition font-bold text-sm">Buy more to average down (Gold Rush!)</button>
-                </div>
-              </div>
+      {activeTab === 'etf' && (
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <div>
+              <h2 className="text-3xl font-black mb-2 uppercase italic tracking-tighter">Direct Bullion Investing</h2>
+              <p className="text-sm text-muted-foreground font-medium">Liquid Gold & Silver ETFs via major Indian exchanges.</p>
             </div>
-          ) : (
-            <>
-              {quizScore > 0 && (
-                <div className="bg-primary/10 border border-primary/20 rounded-3xl p-6 mb-8 flex items-center justify-between">
-                  <div>
-                    <h4 className="text-xs font-bold uppercase text-primary mb-1">Your Strategy Persona</h4>
-                    <p className="font-bold text-lg">{quizScore === 1 ? "Conservative Guardian" : quizScore === 2 ? "Balanced Strategist" : "Bullion Visionary"}</p>
-                  </div>
-                  <button onClick={() => setIsQuizOpen(true)} className="text-xs font-black uppercase text-primary underline">Retake Test</button>
-                </div>
-              )}
-              
-              <div className="bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-[2.5rem] p-8 text-white mb-12 shadow-2xl relative overflow-hidden">
-                 <div className="absolute top-0 right-0 p-8 opacity-10 rotate-12"><Activity size={200} /></div>
-                 <div className="relative z-10">
-                   <h2 className="text-4xl font-black mb-4 italic">Bullion Battle Arena</h2>
-                   <p className="text-lg font-medium opacity-90 mb-8 max-w-md">Predict the market, win virtual ₹ rewards, and climb the global leaderboard. Master the gold cycle without real risk.</p>
-                   <div className="flex gap-4">
-                     <button onClick={() => setIsGameOpen(true)} className="px-8 py-3 bg-white text-yellow-700 rounded-2xl font-black uppercase tracking-widest shadow-xl hover:scale-105 transition">Start Simulation</button>
-                     <div className="bg-black/20 backdrop-blur-md px-6 py-3 rounded-2xl">
-                        <p className="text-[10px] font-bold uppercase opacity-70">Virtual Balance</p>
-                        <p className="text-xl font-black">₹{gameBalance.toLocaleString()}</p>
-                     </div>
-                   </div>
-                 </div>
-              </div>
+            <div className="flex bg-secondary/50 p-1 rounded-xl border">
+               <button className="px-6 py-2 bg-background rounded-lg text-xs font-bold shadow-sm">NSE/BSE</button>
+               <button className="px-6 py-2 text-xs font-bold text-muted-foreground">DIGITAL GOLD</button>
+            </div>
+          </div>
 
-              <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">Top Bullion Forecasters</h3>
-              <div className="bg-card border rounded-3xl overflow-hidden shadow-sm">
-                <table className="w-full text-left">
-                  <thead className="bg-secondary/50 border-b">
-                    <tr>
-                      <th className="p-4 text-xs font-bold uppercase text-muted-foreground">Rank</th>
-                      <th className="p-4 text-xs font-bold uppercase text-muted-foreground">User</th>
-                      <th className="p-4 text-xs font-bold uppercase text-muted-foreground">AI Accuracy</th>
-                      <th className="p-4 text-xs font-bold uppercase text-muted-foreground">Profit</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {leaderboard.map((user) => (
-                      <tr key={user.rank} className="border-b last:border-0 hover:bg-secondary/20 transition">
-                        <td className="p-4">
-                          <span className={cn("w-8 h-8 rounded-full flex items-center justify-center font-black text-sm", 
-                            user.rank === 1 ? "bg-yellow-500 text-white" : user.rank === 2 ? "bg-gray-400 text-white" : "bg-secondary text-muted-foreground")}>
-                            {user.rank}
-                          </span>
-                        </td>
-                        <td className="p-4">
-                          <div className="font-bold">{user.name}</div>
-                          <div className="flex gap-1 mt-1">
-                            {user.badges.map(b => <span key={b} className="text-[8px] font-black uppercase px-1.5 py-0.5 bg-primary/10 text-primary rounded border border-primary/20">{b}</span>)}
-                          </div>
-                        </td>
-                        <td className="p-4 font-black text-primary">{user.accuracy}</td>
-                        <td className="p-4 font-bold text-green-500">{user.profit}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {[
+              { name: "Nippon India Gold BEES", symbol: "GOLDBEES", expense: "0.82%", provider: "Nippon Life", link: "https://mf.nipponindiaim.com/FundsAndPerformance/Pages/NipponIndia-ETF-Gold-BeES.aspx" },
+              { name: "ICICI Prudential Gold ETF", symbol: "IPRU_GOLD", expense: "0.50%", provider: "ICICI Pru", link: "https://www.icicipruamc.com/mutual-fund/exchange-traded-funds/icici-prudential-gold-etf" },
+              { name: "HDFC Gold ETF", symbol: "HDFC_GOLD", expense: "0.59%", provider: "HDFC AMC", link: "https://www.hdfcfund.com/product-solutions/overview/hdfc-gold-exchange-traded-fund/regular" },
+              { name: "ICICI Silver ETF", symbol: "SILVER_ETF", expense: "0.60%", provider: "ICICI Pru", link: "https://www.icicipruamc.com/mutual-fund/exchange-traded-funds/icici-prudential-silver-etf" },
+              { name: "Nippon Silver BEES", symbol: "SILVERBEES", expense: "0.75%", provider: "Nippon Life", link: "https://mf.nipponindiaim.com/FundsAndPerformance/Pages/NipponIndia-Silver-ETF.aspx" },
+              { name: "SBI Gold ETF", symbol: "SBI_GOLD", expense: "0.64%", provider: "SBI MF", link: "https://www.sbimf.com/mutual-fund/exchange-traded-funds/sbi-gold-etf" }
+            ].map((etf, i) => (
+              <div key={i} className="bg-card border rounded-3xl p-6 hover:border-primary transition-all group shadow-sm flex flex-col">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="bg-primary/10 text-primary p-3 rounded-2xl group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    {etf.name.includes('Silver') ? <SilverLogo className="w-6 h-6" /> : <GoldLogo className="w-6 h-6" />}
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] font-black uppercase text-muted-foreground block mb-1">Exchange Symbol</span>
+                    <span className="font-black text-lg tracking-tighter">{etf.symbol}</span>
+                  </div>
+                </div>
+                <h3 className="font-bold text-lg mb-1">{etf.name}</h3>
+                <p className="text-xs text-muted-foreground mb-4">Managed by {etf.provider}</p>
+                
+                <div className="grid grid-cols-2 gap-4 mb-6 pt-4 border-t border-dashed">
+                   <div>
+                     <span className="text-[10px] font-bold text-muted-foreground uppercase block mb-1">Expense Ratio</span>
+                     <span className="font-bold text-sm">{etf.expense}</span>
+                   </div>
+                   <div className="text-right">
+                     <span className="text-[10px] font-bold text-muted-foreground uppercase block mb-1">Liquidity</span>
+                     <span className="font-bold text-sm text-green-500">High</span>
+                   </div>
+                </div>
+
+                <div className="flex gap-2 mt-auto">
+                   <a href={etf.link} target="_blank" rel="noopener noreferrer" className="flex-1 py-3 bg-secondary hover:bg-primary hover:text-white rounded-xl text-center text-xs font-black uppercase transition-all">Official AMC Buy</a>
+                   <button 
+                    onClick={() => {
+                      const assetType = etf.name.includes('Silver') ? 'silver' : 'gold_24k';
+                      const currentPrice = assetType === 'gold_24k' ? (currentPrices?.gold?.price_1g_24k || 6000) : (currentPrices?.silver?.price_1kg / 1000 || 75);
+                      setPortfolio([...portfolio, { id: Date.now(), asset: assetType, weight: 1, buyPrice: currentPrice }]);
+                      setActiveTab('portfolio');
+                    }}
+                    className="p-3 bg-primary/5 hover:bg-primary/20 rounded-xl transition-colors" title="Save to Portfolio">
+                     <Briefcase className="w-4 h-4 text-primary" />
+                   </button>
+                </div>
               </div>
-              <div className="text-center mt-8">
-                <button onClick={() => setIsQuizOpen(true)} className="px-12 py-4 border-2 border-primary text-primary rounded-3xl font-black uppercase tracking-widest hover:bg-primary hover:text-white transition">Discover Your Investor Type</button>
-              </div>
-            </>
-          )}
+            ))}
+          </div>
+
+          <h2 className="text-3xl font-black mb-8 uppercase italic tracking-tighter border-t pt-8">Digital Gold Platforms</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              { name: "SafeGold", desc: "24K 99.99% Pure Gold", pros: "Can convert to physical coins. Minimum ₹10.", link: "https://www.safegold.com/" },
+              { name: "MMTC-PAMP", desc: "India's only LBMA accredited refinery", pros: "Highest purity guarantee. Swiss standards.", link: "https://mmtcpamp.com/digital-gold" },
+              { name: "Augmont", desc: "Gold for All", pros: "Backed by physical gold. Delivered to door.", link: "https://www.augmont.com/" },
+              { name: "Zerodha / Groww", desc: "Buy directly from broker", pros: "Integrated into your main investing app.", link: "https://zerodha.com/" }
+            ].map((dg, i) => (
+               <div key={i} className="bg-card border rounded-2xl p-6 shadow-sm flex items-center justify-between group hover:border-primary transition-all">
+                 <div>
+                    <h3 className="font-bold text-xl mb-1 group-hover:text-primary transition-colors">{dg.name}</h3>
+                    <p className="text-xs text-muted-foreground mb-2">{dg.desc}</p>
+                    <span className="text-[10px] font-black uppercase bg-secondary px-2 py-1 rounded">{dg.pros}</span>
+                 </div>
+                 <a href={dg.link} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all shrink-0 ml-4">
+                    <TrendingUp className="w-5 h-5" />
+                 </a>
+               </div>
+            ))}
+          </div>
+
+          <div className="mt-12 bg-primary/5 border border-primary/20 rounded-[2.5rem] p-10 flex flex-col md:flex-row items-center gap-8">
+             <div className="flex-1">
+                <h3 className="text-2xl font-black mb-4 uppercase tracking-tighter">Why invest in ETFs?</h3>
+                <ul className="space-y-4">
+                  {[
+                    "Zero making charges compared to physical jewelry.",
+                    "No storage or theft risks (held in your Demat account).",
+                    "Extremely high liquidity - sell and get cash in T+2 days.",
+                    "Buy even small amounts (as low as 1 unit / approx 1 gram)."
+                  ].map((text, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm font-medium">
+                       <div className="bg-primary text-white p-1 rounded-full mt-0.5"><Activity size={10} /></div>
+                       {text}
+                    </li>
+                  ))}
+                </ul>
+             </div>
+             <div className="w-full md:w-64 bg-white dark:bg-zinc-900 rounded-3xl p-6 border shadow-2xl rotate-3 flex flex-col items-center text-center">
+                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white mb-4 shadow-lg shadow-green-500/20">
+                   <TrendingUp size={32} />
+                </div>
+                <h4 className="font-black text-xl mb-2">Taxes in India</h4>
+                <p className="text-xs text-muted-foreground font-medium mb-4 leading-relaxed">Gold/Silver ETFs are now taxed at your income tax slab rate (Short Term Capital Gains) as per recent budget rules.</p>
+                <div className="text-[10px] font-bold uppercase py-1 px-3 bg-secondary rounded-full">Finance Act 2024</div>
+             </div>
+          </div>
         </motion.div>
       )}
 
@@ -1237,54 +1463,84 @@ const PriceCard = ({ title, price, logo }: any) => (
   </motion.div>
 );
 
-const PredictionCard = ({ title, data, isGold }: any) => {
+const PredictionCard = ({ title, data, isGold, currentPrice }: any) => {
   if (!data) return <div className="bg-card border rounded-2xl p-6 h-32 flex items-center justify-center"><LoadingSpinner /></div>;
   const isUp = data.trend === "up";
   const Icon = isUp ? TrendingUp : TrendingDown;
-  const displayValue = isGold ? data.predicted_tomorrow_10g_24k : data.predicted_tomorrow_1kg;
-  const subtitle = isGold ? `22K: ~ ₹${data.predicted_tomorrow_10g_22k.toLocaleString()} / 10g` : " ";  
-  
-  // Calculate Confidence based on algorithm and trend strength
-  const confidence = Math.round(85 + (Math.abs(data.percent_change) * 2) + (Math.random() * 5));
+  const liveForecast = data.live_forecast;
+  const dailyBuyAt = data.daily_buy_at;
+  const dailyTarget = data.daily_target;
+
+  const confidence = data.confidence || 85;
+  const recColor = data.recommendation?.includes("BUY") ? "text-green-500 bg-green-500/10 border-green-500/20" 
+                 : data.recommendation?.includes("SELL") ? "text-red-500 bg-red-500/10 border-red-500/20"
+                 : "text-blue-500 bg-blue-500/10 border-blue-500/20";
 
   return (
-    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-card border border-primary/20 rounded-2xl p-6 shadow-sm overflow-hidden relative">
+    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-card border border-primary/20 rounded-2xl p-6 shadow-sm overflow-hidden relative group hover:border-primary/40 transition-all">
       <div className="absolute top-0 right-0 p-4 opacity-10 scale-150 rotate-12">
         {isGold ? <GoldLogo /> : <SilverLogo />}
       </div>
-      <h3 className="text-sm font-medium text-muted-foreground mb-4 relative z-10">{title}</h3>
-      <div className="flex items-center justify-between mb-4 relative z-10">
-        <div>
-          <p className="text-4xl font-extrabold mb-1">₹{displayValue.toLocaleString()}</p>
-          {isGold && <p className="text-xs text-muted-foreground">{subtitle}</p>}
-        </div>
-        <div className="text-right">
-          <div className={cn("inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold mb-2", isUp ? "text-green-500 bg-green-500/10" : "text-red-500 bg-red-500/10")}>
-            <Icon className="w-4 h-4" />{data.percent_change}%
-          </div>
-          <p className="text-xs text-muted-foreground uppercase tracking-tighter">Expected Trend</p>
-        </div>
-      </div>
       
-      <div className="mt-4 pt-4 border-t border-border/50 relative z-10">
+      <div className="flex justify-between items-center mb-6 relative z-10">
+         <div className="flex flex-col">
+            <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{title}</h3>
+            {isGold && (
+               <div className="flex items-center gap-1.5 mt-1">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_5px_rgba(234,179,8,1)]"></div>
+                  <span className="text-[9px] font-black text-primary uppercase tracking-tighter">Gold Secure Daily Signal</span>
+               </div>
+            )}
+         </div>
+         {data.recommendation && (
+            <span className={cn("px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-tighter border shadow-sm", recColor)}>
+               {data.recommendation}
+            </span>
+         )}
+      </div>
+
+      <div className="flex items-center justify-between mb-6 relative z-10">
+         <div>
+            <p className="text-[10px] font-black uppercase text-muted-foreground mb-1">Target Forecast</p>
+            <p className="text-4xl font-black tracking-tighter">₹{dailyTarget?.toLocaleString()}</p>
+         </div>
+         <div className="text-right">
+            <div className={cn("inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-black mb-1", isUp ? "text-green-500 bg-green-500/10" : "text-red-500 bg-red-500/10")}>
+               <Icon className="w-3 h-3" />{data.percent_change}%
+            </div>
+            <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Expected Trend</p>
+         </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 relative z-10 pt-4 border-t border-dashed">
+         <div>
+            <p className="text-[9px] font-black uppercase text-muted-foreground mb-1">Buy Entry</p>
+            <p className="text-lg font-black text-blue-500">₹{dailyBuyAt?.toLocaleString()}</p>
+         </div>
+         <div className="text-right">
+            <p className="text-[9px] font-black uppercase text-primary mb-1 flex items-center justify-end gap-1">
+               <span className="h-1 w-1 rounded-full bg-primary"></span> Live AI Tick
+            </p>
+            <p className="text-lg font-black opacity-80 tabular-nums">₹{liveForecast?.toLocaleString()}</p>
+         </div>
+      </div>
+
+      <div className="mt-6 pt-4 border-t border-border/50 relative z-10">
         <div className="flex justify-between items-center mb-1.5">
-          <span className="text-[10px] font-black uppercase text-muted-foreground">AI Prediction Confidence</span>
-          <span className="text-[10px] font-black text-primary">{confidence}%</span>
+          <span className="text-[10px] font-black uppercase text-muted-foreground">Model Confidence</span>
+          <span className="text-[10px] font-black text-primary">{confidence}% Verified</span>
         </div>
         <div className="w-full bg-secondary h-1 rounded-full overflow-hidden">
-          <motion.div 
-            initial={{ width: 0 }} 
-            animate={{ width: `${confidence}%` }} 
-            transition={{ duration: 1, delay: 0.5 }}
-            className="bg-primary h-full" 
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${confidence}%` }}
+            className="bg-primary h-full"
           />
         </div>
       </div>
-      <div className="pt-4 mt-4 border-t border-border/50 text-[10px] text-muted-foreground relative z-10"><strong>Algorithm:</strong> {data.algorithm || "Random Forest Regressor (RFR)"}</div>
     </motion.div>
   );
 };
-
 const FakeGoldTool = () => {
   const [step, setStep] = useState(0);
   const steps = [
