@@ -1331,7 +1331,7 @@ export default function Dashboard() {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold flex items-center gap-2"><Newspaper className="text-primary" /> Latest Market Updates</h2>
-            <button onClick={() => setHiddenNews(new Set([...hiddenNews, ...news.map(n => n.id)]))} className="text-xs px-3 py-1.5 bg-secondary text-muted-foreground hover:text-foreground rounded-lg transition">Clear All</button>
+            <button onClick={() => setHiddenNews(new Set([...Array.from(hiddenNews), ...news.map(n => n.id)]))} className="text-xs px-3 py-1.5 bg-secondary text-muted-foreground hover:text-foreground rounded-lg transition">Clear All</button>
           </div>
           <div className="grid gap-4">
             {news.filter(n => !hiddenNews.has(n.id)).map((item, idx) => (
