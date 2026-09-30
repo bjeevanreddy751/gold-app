@@ -39,7 +39,13 @@ ctx.verify_mode = ssl.CERT_NONE
 
 # Simple In-Memory Cache
 price_cache = {}
-CACHE_EXPIRY_SECONDS = 60 
+CACHE_EXPIRY_SECONDS = 30
+
+# Retail multipliers calibrated to actual Indian retail rates (import duty + premiums).
+# Gold: spot $4,182/oz, USD/INR 95.8 -> retail ₹14,957/g (30 Sep 2026) => 1.16
+# Silver: spot $60.5/oz, USD/INR 95.8 -> retail ₹240/g i.e. ₹2,40,000/kg (30 Sep 2026) => 1.29
+GOLD_RETAIL_MULTIPLIER = 1.16
+SILVER_RETAIL_MULTIPLIER = 1.29
 
 def get_latest_data(ticker_symbol):
     now = datetime.datetime.now()
@@ -75,7 +81,7 @@ def get_usd_to_inr():
         return 83.5 
 
 def get_dynamic_gold_multiplier():
-    return 1.075 
+    return GOLD_RETAIL_MULTIPLIER
 
 def convert_prices(price_per_oz_usd, inr_rate, multiplier):
     retail_price_inr_oz = price_per_oz_usd * inr_rate * multiplier
@@ -90,7 +96,7 @@ def convert_prices(price_per_oz_usd, inr_rate, multiplier):
     }
 
 def convert_silver_prices(price_per_oz_usd, inr_rate):
-    retail_price_inr_oz = price_per_oz_usd * inr_rate * 1.18 
+    retail_price_inr_oz = price_per_oz_usd * inr_rate * SILVER_RETAIL_MULTIPLIER
     price_1g = retail_price_inr_oz / TROY_OUNCE_TO_GRAMS
     return {
         "price_per_oz": round(retail_price_inr_oz, 2),
@@ -272,7 +278,7 @@ async def get_market_analytics():
         high_s, low_s, close_s = hist_s['High'].max(), hist_s['Low'].min(), hist_s['Close'].iloc[-1]
         pivot_s = (high_s + low_s + close_s) / 3
         r1_s, s1_s = (2 * pivot_s) - low_s, (2 * pivot_s) - high_s
-        to_inr_silver_1kg = lambda x: round(x * inr_rate * 1.18 / TROY_OUNCE_TO_GRAMS * 1000)
+        to_inr_silver_1kg = lambda x: round(x * inr_rate * SILVER_RETAIL_MULTIPLIER / TROY_OUNCE_TO_GRAMS * 1000)
 
         return {
             "gs_ratio": gs_ratio,
@@ -356,7 +362,7 @@ async def get_historical_data(asset: str, range: str = "3mo"):
             multiplier = get_dynamic_gold_multiplier()
             hist['Price'] = (hist['Close'] * inr_rate * multiplier / TROY_OUNCE_TO_GRAMS * 10).round(2)
         else:
-            hist['Price'] = (hist['Close'] * inr_rate * 1.18 / TROY_OUNCE_TO_GRAMS * 1000).round(2)
+            hist['Price'] = (hist['Close'] * inr_rate * SILVER_RETAIL_MULTIPLIER / TROY_OUNCE_TO_GRAMS * 1000).round(2)
         hist.reset_index(inplace=True)
         hist['Date'] = hist['Date'].dt.strftime('%Y-%m-%d')
         return hist[['Date', 'Price']].to_dict(orient='records')
@@ -409,8 +415,8 @@ async def predict_prices():
         long_term = {
             "gold_6m": {"target": round(current_g * 1.055 * inr_rate * 1.075 / TROY_OUNCE_TO_GRAMS * 10), "sell_above": round(current_g * 1.09 * inr_rate * 1.075 / TROY_OUNCE_TO_GRAMS * 10), "buy_below": round(current_g * 1.02 * inr_rate * 1.075 / TROY_OUNCE_TO_GRAMS * 10)},
             "gold_1y": {"target": round(current_g * 1.12 * inr_rate * 1.075 / TROY_OUNCE_TO_GRAMS * 10), "sell_above": round(current_g * 1.18 * inr_rate * 1.075 / TROY_OUNCE_TO_GRAMS * 10), "buy_below": round(current_g * 1.05 * inr_rate * 1.075 / TROY_OUNCE_TO_GRAMS * 10)},
-            "silver_6m": {"target": round(current_s * 1.07 * inr_rate * 1.18 / TROY_OUNCE_TO_GRAMS * 1000), "sell_above": round(current_s * 1.12 * inr_rate * 1.18 / TROY_OUNCE_TO_GRAMS * 1000), "buy_below": round(current_s * 1.02 * inr_rate * 1.18 / TROY_OUNCE_TO_GRAMS * 1000)},
-            "silver_1y": {"target": round(current_s * 1.15 * inr_rate * 1.18 / TROY_OUNCE_TO_GRAMS * 1000), "sell_above": round(current_s * 1.25 * inr_rate * 1.18 / TROY_OUNCE_TO_GRAMS * 1000), "buy_below": round(current_s * 1.05 * inr_rate * 1.18 / TROY_OUNCE_TO_GRAMS * 1000)}
+            "silver_6m": {"target": round(current_s * 1.07 * inr_rate * SILVER_RETAIL_MULTIPLIER / TROY_OUNCE_TO_GRAMS * 1000), "sell_above": round(current_s * 1.12 * inr_rate * SILVER_RETAIL_MULTIPLIER / TROY_OUNCE_TO_GRAMS * 1000), "buy_below": round(current_s * 1.02 * inr_rate * SILVER_RETAIL_MULTIPLIER / TROY_OUNCE_TO_GRAMS * 1000)},
+            "silver_1y": {"target": round(current_s * 1.15 * inr_rate * SILVER_RETAIL_MULTIPLIER / TROY_OUNCE_TO_GRAMS * 1000), "sell_above": round(current_s * 1.25 * inr_rate * SILVER_RETAIL_MULTIPLIER / TROY_OUNCE_TO_GRAMS * 1000), "buy_below": round(current_s * 1.05 * inr_rate * SILVER_RETAIL_MULTIPLIER / TROY_OUNCE_TO_GRAMS * 1000)}
         }
 
         return {
@@ -460,7 +466,7 @@ async def get_actual_vs_predict():
             except: ag = hist_g['Close'].iloc[-i-1] if i < len(hist_g) else hist_g['Close'].iloc[0]
             try: asil = hist_s.loc[ds]['Close']
             except: asil = hist_s['Close'].iloc[-i-1] if i < len(hist_s) else hist_s['Close'].iloc[0]
-            vg, vs = round(ag * inr_rate * mult / TROY_OUNCE_TO_GRAMS * 10), round(asil * inr_rate * 1.18 / TROY_OUNCE_TO_GRAMS * 1000)
+            vg, vs = round(ag * inr_rate * mult / TROY_OUNCE_TO_GRAMS * 10), round(asil * inr_rate * SILVER_RETAIL_MULTIPLIER / TROY_OUNCE_TO_GRAMS * 1000)
             
             # Use a realistic, tight error margin for the "nearly accurate" ensemble logic
             g_error = random.randint(-150, 150)
